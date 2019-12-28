@@ -1,0 +1,91 @@
+<template>
+    <template if:true={processing}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <div class="nubin-outer-container address-container slds-scrollable" style="position:relative;">
+        <div class="slds-section slds-border--bottom slds-border--left slds-border--right slds-border--bottom slds-border--left slds-border--top slds-is-open slds-theme--shade">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <div class="slds-m-left--medium slds-m-top--medium">
+                        <lightning-icon icon-name="standard:case" variant="bare" size="medium"></lightning-icon><span class="slds-text-heading_small">&nbsp;&nbsp;Cases&nbsp;({resultLength})</span>
+                    </div>
+                </div>
+                <div  class="slds-col slds-size--1-of-5 slds-m-right--medium">
+                    <select class="slds-select slds-col slds-m-top--medium slds-m-right--medium yourSelector" onchange={handleFilter}>
+                        <template for:each = {opts} for:item="listViewItem">
+                            <option key={listViewItem} value={listViewItem}>{listViewItem}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+            <div onkeyup={search} class="slds-p-left--medium slds-p-bottom--small searchText">
+                    <lightning-input
+                        name="enter-search"
+                        placeholder= "Search Case"
+                        type="search"
+                        class = "slds-size--1-of-3 yourInput"
+                    ></lightning-input>
+            </div>
+            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+                <thead>
+                    <tr class="slds-text-title_caps"> 
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="CASE NUMBER">
+                                CASE NUMBER
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="CONTACT NAME">
+                                CONTACT NAME
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="SUBJECT">
+                                SUBJECT
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="STATUS">
+                                STATUS
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="ACCOUNT NAME">
+                                ACCOUNT NAME
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-cell-wrap slds-text-heading--label" title="TYPE">
+                               TYPE
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each = {wiredResult} for:item="record" for:index="index">
+                        <tr class="slds-hint-parent" key={record.CaseNumber}>
+                            <td  data-label="Case Number" style="white-space: pre-wrap;">
+                                <a><div class="slds-cell-wrap slds-text-link" onclick={navigateTo} data-object="Case" data-recordid={record.Id}>{record.CaseNumber}</div></a>
+                            </td>
+                            <td  data-label="Policy Number" style="white-space: pre-wrap;">
+                                <a><div class="slds-cell-wrap slds-text-link" onclick={navigateTo} data-object="Contact" data-recordid={record.ContactId}>{record.Contact.Name}</div></a>
+                            </td>
+                            <td  data-label="Type" style="white-space: pre-wrap;">
+                                <div class="slds-cell-wrap">{record.Subject}</div>
+                            </td>
+                            <td  data-label="Origin" style="white-space: pre-wrap;">
+                                <div class="slds-cell-wrap">{record.Status}</div>
+                            </td>
+                            <td  data-label="Owner" style="white-space: pre-wrap;">
+                                <div class="slds-cell-wrap">{record.Account.Name}</div>
+                            </td>
+                            <td  data-label="Status" style="white-space: pre-wrap;">
+                                <div class="slds-cell-wrap">{record.Type}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
